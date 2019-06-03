@@ -8,6 +8,7 @@ class TestFull < Methadone::BaseIntegrationTest
     assert_banner(stdout, "scf", takes_options: true, takes_arguments: false)
     assert_option(stdout, "--geo")
     assert_option(stdout, "--account")
+    assert_option(stdout, "--import")
     assert_option(stdout,"-h", "--help")
     assert_option(stdout,"--version")
     assert_oneline_summary(stdout)

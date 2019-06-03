@@ -28,4 +28,5 @@ class TestApi < Test::Unit::TestCase
     result = api.geospatial(41.307153,-72.925791)
     assert_equal(JSON.parse(expected), JSON.parse(result))
   end
+
 end
