@@ -7,8 +7,9 @@ module Scf
   include Methadone::CLILogging
 
   main do
+    api = Api.new
 
-    Cli.queryAccount(options[:account])
+    Cli.queryAccount(api, options[:account])
 
   end
 

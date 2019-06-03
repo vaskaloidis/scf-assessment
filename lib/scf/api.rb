@@ -14,7 +14,7 @@ module Scf
 
 		def services(account)
 			endpoint = "#{account}/requests.json"
-			puts "Endpoint: #{endpoint}"
+			# puts "Endpoint: #{endpoint}"
 			result = @connection.get endpoint
 			result.body
 		end
