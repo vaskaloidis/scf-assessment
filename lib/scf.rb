@@ -7,23 +7,27 @@ module Scf
 	include Methadone::Main
 	include Methadone::CLILogging
 
+
 	main do |account, geo|
-		api = Api.new
+		api    = Api.new
+		params = options[:params]
 
-		puts options[:account]
-		puts options[:geo]
+		if options[:params] != Scf::Cli::DEFAULT_PARAMS
+			params = options[:params].split(options[:param_delimeter])
+		elsif options[:param_delimeter]
+			puts "You must specify custom parameters --params when specifying a custom delimeter for them. Ignoring --params_delimeter for now."
+		end
 
-		if (options[:account])
-			puts "Querying by account ID: #{options[:account]}"
-			puts Cli.queryAccount(api, options[:account])
-		elsif (options[:geo])
-			puts "Querying by Geospatial coordinates: #{options[:geo]}"
-			puts Cli.queryGeospatial(api, options[:geo])
-		elsif (options[:import])
-			puts "Importing file containing account ID's: #{options[:import]}"
-			puts Cli.importAccounts(api, options[:import])
+		if options[:account]
+			account = options[:account]
+			puts "Querying by account ID: #{account}"
+			puts Cli.queryAccount(api, account, params)
+		elsif options[:geo]
+			geo = options[:geo]
+			puts "Querying by Geospatial coordinates: #{geo}"
+			puts Cli.queryGeospatial(api, geo, params)
 		else
-			puts "Must specify an account-id or geospatial coordinates with --geo or --account"
+			puts "Must specify an account-id, geospatial coordinates or an import file with account ID's"
 		end
 
 	end
@@ -32,12 +36,17 @@ module Scf
 
 	description '311 Query tool'
 
+	options[:param_delimeter] = ","
+	options[:params]          = Scf::Cli::DEFAULT_PARAMS
+
 	on("--account ID", "The ID of the 311 account to be queried")
 	on("--geo LAT,LONG", "The latitude longitude separated by a coma")
-	on("--import file.rb", "Import a file containing account-id's separated by comma's")
+
+	on("--params PARAM3+PARAM2+PARAM3", "Specify the parameters you would like to have returned in CSV")
+	on("--param_delimeter <DELIMETER>", "Specify an alternate delimeter when listing parameters with --params")
 
 
-	# use_log_level_option
+# use_log_level_option
 
 	go!
 end

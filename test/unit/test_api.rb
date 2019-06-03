@@ -10,7 +10,7 @@ class TestApi < Test::Unit::TestCase
 
     api = Scf::Api.new
     result = api.services(29)
-    assert_equal(JSON.parse(expected), JSON.parse(result))
+    assert_equal(JSON.parse(expected), result)
   end
 
   def test_invalid_organization_id
@@ -26,7 +26,7 @@ class TestApi < Test::Unit::TestCase
 
     api = Scf::Api.new
     result = api.geospatial(41.307153,-72.925791)
-    assert_equal(JSON.parse(expected), JSON.parse(result))
+    assert_equal(JSON.parse(expected), result)
   end
 
 end

@@ -15,14 +15,14 @@ module Scf
 		def services(account)
 			endpoint = "#{account}/requests.json"
 			response = @connection.get endpoint
-			response.success? ? response.body : false
+			response.success? ? JSON.parse(response.body) : false
 
 		end
 
 		def geospatial(lat, long)
 			endpoint = "requests.json"
 			result = @connection.get endpoint, {:lat => lat, :long => long}
-			result.body
+			JSON.parse(result.body)
 		end
 
 	end
