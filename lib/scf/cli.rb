@@ -20,5 +20,11 @@ module Scf
 			puts csv
 		end
 
+		def self.queryGeospatial(api, coordinates)
+			lat = coordinates.split(',')[0]
+			long = coordinates.split(',')[1]
+			result = api.geospatial(lat, long)
+		end
+
 	end
 end

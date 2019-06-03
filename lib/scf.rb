@@ -2,25 +2,37 @@ require "scf/version"
 require "scf/cli"
 
 module Scf
-  class Error < StandardError; end
-  include Methadone::Main
-  include Methadone::CLILogging
+	class Error < StandardError;
+	end
+	include Methadone::Main
+	include Methadone::CLILogging
 
-  main do
-    api = Api.new
+	main do |account, geo|
+		api = Api.new
 
-    Cli.queryAccount(api, options[:account])
+		if (account.nil?)
+			puts "Querying by account #{account}"
+			Cli.queryAccount(api, options[:account])
+		elsif (geo.nil?)
+			puts "Querying Geospatial #{geo}"
+			Cli.queryGeospatial(api, options[:geo])
+		else
+			puts "Must specify an account-id or geospatial coordinates"
+		end
 
-  end
+	end
 
-  version Scf::VERSION
+	version Scf::VERSION
 
-  description '311 Query tool'
-  # arg(:account, [:required])
-  options[:account] = "29"
+	description '311 Query tool'
 
-  # use_log_level_option
+	arg :account, :optional
+	arg :geo, :optional
 
-  on("--account ID","The ID of the 311 account to be queried")
-  go!
+	# use_log_level_option
+
+	on("--account ID", "The ID of the 311 account to be queried")
+	on("--geo LAT,LONG", "The latitude longitude separated by a coma")
+
+	go!
 end
