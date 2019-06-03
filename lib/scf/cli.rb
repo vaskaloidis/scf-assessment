@@ -8,22 +8,30 @@ module Scf
 		def self.queryAccount(api, account)
 			# puts "Querying Account: #{account}" # TODO: Add into logger level
 
-			resp = JSON.parse(api.services(account))
+			service_response = api.services(account)
 
-			csv = CSV.generate do |csv|
-				csv << ["description, service_name, service_request_id"]
-				resp.each do |x|
-					csv << [x["description"], x["service_name"], x["service_request_id"]]
+			if service_response
+
+				resp = JSON.parse(service_response)
+
+				csv = CSV.generate do |csv|
+					csv << ["description, service_name, service_request_id"]
+					resp.each do |x|
+						csv << [x["description"], x["service_name"], x["service_request_id"]]
+					end
 				end
+				return csv
+			else
+				puts "Invalid account-id"
 			end
 
-			puts csv
 		end
 
 		def self.queryGeospatial(api, coordinates)
-			lat = coordinates.split(',')[0]
-			long = coordinates.split(',')[1]
-			result = api.geospatial(lat, long)
+			lat    = coordinates.split(',')[0]
+			long   = coordinates.split(',')[1]
+			api.geospatial(lat, long)
+
 		end
 
 	end

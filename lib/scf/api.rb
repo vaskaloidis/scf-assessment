@@ -1,4 +1,5 @@
 require "faraday"
+require "json"
 
 module Scf
 	class Api
@@ -13,16 +14,14 @@ module Scf
 
 		def services(account)
 			endpoint = "#{account}/requests.json"
-			# puts "Endpoint: #{endpoint}"
-			result = @connection.get endpoint
-			puts result.body
-			result.body
+			response = @connection.get endpoint
+			response.success? ? response.body : false
+
 		end
 
 		def geospatial(lat, long)
 			endpoint = "requests.json"
 			result = @connection.get endpoint, {:lat => lat, :long => long}
-			puts result.body
 			result.body
 		end
 

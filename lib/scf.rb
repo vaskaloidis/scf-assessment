@@ -15,10 +15,10 @@ module Scf
 
 		if (options[:account])
 			puts "Querying by account ID: #{options[:account]}"
-			Cli.queryAccount(api, options[:account])
+			puts Cli.queryAccount(api, options[:account])
 		elsif (options[:geo])
 			puts "Querying by Geospatial coordinates: #{geo}"
-			Cli.queryGeospatial(api, options[:geo])
+			puts Cli.queryGeospatial(api, options[:geo])
 		else
 			puts "Must specify an account-id or geospatial coordinates with --geo or --account"
 		end
