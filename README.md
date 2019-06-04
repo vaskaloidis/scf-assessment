@@ -60,7 +60,9 @@ To run tests:
 bundle exec rake
 ```
 
-## Locations
+## Account-Names
+
+Accounts File: `accounts.csv`
 
 ```
 location1: 53
