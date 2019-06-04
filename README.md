@@ -31,14 +31,14 @@ Specify the parameters to return (default parameter delimeter is a ,)
 
 ```
 bundle exec bin/scf --account 29 --params zipcode,address
-bundle exec bin/scf --geo 41.307153,-72.925791 -- params zipcode,address
+bundle exec bin/scf --geo 41.307153,-72.925791 --params zipcode,address
 ```
 
 To returns parameters using a different delimeter (like a +) use `--param_delimeter`
 
 ```
 bundle exec bin/scf --account 29 --params zipcode+address --param_delimeter +
-bundle exec bin/scf --geo 41.307153,-72.925791 -- params zipcode+address --param_delimeter +
+bundle exec bin/scf --geo 41.307153,-72.925791 --params zipcode+address --param_delimeter +
 ```
 
 

@@ -14,8 +14,6 @@ module Scf
 
 		if options[:params] != Scf::Cli::DEFAULT_PARAMS
 			params = options[:params].split(options[:param_delimeter])
-		elsif options[:param_delimeter]
-			puts "You must specify custom parameters --params when specifying a custom delimeter for them. Ignoring --params_delimeter for now."
 		end
 
 		if options[:account]

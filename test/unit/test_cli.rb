@@ -55,4 +55,35 @@ open,City of New Haven,12345\n"
 		assert_equal(expected_result, result.force_encoding('UTF-8'))
 	end
 
+	def test_geocoordinate_custom_params
+		expected_result = File.read(File.join(File.dirname(__FILE__), '../test_data/expected_csv/geocoordinate_zipcode_address.csv'))
+
+		api_mock = File.read(File.join(File.dirname(__FILE__), '../test_data/json_mocks/geospatial_query.json'))
+		json = JSON.generate(api_mock)
+
+		api = Scf::Api.new
+		api.stubs(:services).returns(JSON.parse(json))
+
+		result = Scf::Cli.queryGeospatial(api, "41.307153,-72.925791", ["zipcode", "address"])
+
+
+		assert_equal(expected_result.force_encoding('UTF-8'), result.force_encoding('UTF-8'))
+	end
+
+	def test_invalid_account_name
+		api = Scf::Api.new
+		result = Scf::Cli.queryAccount(api, "location5", Scf::Cli::DEFAULT_PARAMS)
+
+		assert_equal("An error ocurred or invalid ID", result)
+	end
+
+	def test_account_name_translator_custom_params
+		api = Scf::Api.new
+		expected_result = File.read(File.join(File.dirname(__FILE__), '../test_data/expected_csv/account_29_zipcode_service.csv'))
+
+		result = Scf::Cli.queryAccount(api, "location4", ["zipcode","service_name"])
+
+		assert_equal(expected_result, result.force_encoding('UTF-8'))
+	end
+
 end

@@ -4,7 +4,8 @@ require "json"
 module Scf
 	class Api
 
-		API_URL ="https://test.seeclickfix.com/open311/v2"
+		TEST_API_URL ="https://test.seeclickfix.com/open311/v2"
+		API_URL ="https://seeclickfix.com/open311/v2"
 
 		attr_reader :connection
 
