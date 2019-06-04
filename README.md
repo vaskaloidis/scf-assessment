@@ -50,6 +50,12 @@ bundle exec bin/scf --geo 41.307153,-72.925791 --params zipcode+address --param_
 
 ## Test
 
+This gem will build on Travis CI automatically upon push to GitHub.
+
+View On Travis: https://travis-ci.org/vaskaloidis/scf-assessment
+
+To run tests:
+
 ```
 bundle exec rake
 ```
