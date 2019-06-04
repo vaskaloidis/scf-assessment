@@ -18,7 +18,6 @@ bundle exec bin/scf --account 29
 
 ```
 
-
 To query by latitude and longitude
 
 ```
@@ -39,6 +38,13 @@ To returns parameters using a different delimeter (like a +) use `--param_delime
 ```
 bundle exec bin/scf --account 29 --params zipcode+address --param_delimeter +
 bundle exec bin/scf --geo 41.307153,-72.925791 --params zipcode+address --param_delimeter +
+```
+
+To filter results with a search-keywoard add the `--search` parameter
+
+```
+bundle exec bin/scf --account location4 --params zipcode+address --param_delimeter + --search KEYWORD
+bundle exec bin/scf --geo 41.307153,-72.925791 --params zipcode+address --param_delimeter + --search KEYWORD
 ```
 
 

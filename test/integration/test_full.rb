@@ -10,6 +10,7 @@ class TestFull < Methadone::BaseIntegrationTest
     assert_option(stdout, "--account")
     assert_option(stdout, "--params")
     assert_option(stdout, "--param_delimeter")
+    assert_option(stdout, "--search")
     assert_option(stdout,"-h", "--help")
     assert_option(stdout,"--version")
     assert_oneline_summary(stdout)

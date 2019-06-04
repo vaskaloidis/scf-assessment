@@ -33,7 +33,7 @@ class TestCli < Test::Unit::TestCase
 		api = Scf::Api.new
 		api.stubs(:services).returns(JSON.parse(json))
 
-		result = Scf::Cli.queryAccount(api, 29, Scf::Cli::DEFAULT_PARAMS)
+		result = Scf::Cli.queryAccount(api, 29, Scf::Cli::DEFAULT_PARAMS, false)
 
 		expected_result = "description,service_name,service_request_id
 a test desc,\"Public Space, Streets and Drains\",12345\n"
@@ -47,7 +47,7 @@ a test desc,\"Public Space, Streets and Drains\",12345\n"
 		api = Scf::Api.new
 		api.stubs(:services).returns(JSON.parse(json))
 
-		result = Scf::Cli.queryAccount(api, 29, ["status", "agency_responsible", "service_request_id"])
+		result = Scf::Cli.queryAccount(api, 29, ["status", "agency_responsible", "service_request_id"], false)
 
 		expected_result = "status,agency_responsible,service_request_id
 open,City of New Haven,12345\n"
@@ -59,31 +59,79 @@ open,City of New Haven,12345\n"
 		expected_result = File.read(File.join(File.dirname(__FILE__), '../test_data/expected_csv/geocoordinate_zipcode_address.csv'))
 
 		api_mock = File.read(File.join(File.dirname(__FILE__), '../test_data/json_mocks/geospatial_query.json'))
-		json = JSON.generate(api_mock)
+		json     = JSON.generate(api_mock)
 
 		api = Scf::Api.new
 		api.stubs(:services).returns(JSON.parse(json))
 
-		result = Scf::Cli.queryGeospatial(api, "41.307153,-72.925791", ["zipcode", "address"])
+		result = Scf::Cli.queryGeospatial(api, "41.307153,-72.925791", ["zipcode", "address"], false)
 
 
 		assert_equal(expected_result.force_encoding('UTF-8'), result.force_encoding('UTF-8'))
 	end
 
 	def test_invalid_account_name
-		api = Scf::Api.new
-		result = Scf::Cli.queryAccount(api, "location5", Scf::Cli::DEFAULT_PARAMS)
+		api    = Scf::Api.new
+		result = Scf::Cli.queryAccount(api, "location5", Scf::Cli::DEFAULT_PARAMS, false)
 
 		assert_equal("An error ocurred or invalid ID", result)
 	end
 
 	def test_account_name_translator_custom_params
-		api = Scf::Api.new
+		api             = Scf::Api.new
 		expected_result = File.read(File.join(File.dirname(__FILE__), '../test_data/expected_csv/account_29_zipcode_service.csv'))
 
-		result = Scf::Cli.queryAccount(api, "location4", ["zipcode","service_name"])
+		result = Scf::Cli.queryAccount(api, "location4", ["zipcode", "service_name"], false)
 
 		assert_equal(expected_result, result.force_encoding('UTF-8'))
 	end
+
+	FILTER_TEST_DATA =
+		 [{
+				 "description":        "another test desc",
+				 "address":            "63 Middle Quarter Rd, Woodbury, CT",
+				 "service_request_id": 12345,
+		  },
+		  {
+				 "description":        "a test desc",
+				 "address":            "84 Osborn Avenue  New Haven, Connecticut",
+				 "service_request_id": 12345,
+		  },
+		  {
+				 "description":        "again a test desc",
+				 "address":            "84 Osborn Avenue  New Mexico, Connecticut",
+				 "service_request_id": 12345,
+		  },
+		  {
+				 "description":        "a test that should be included",
+				 "address":            "84 Osborn Avenue  New Haven, Connecticut",
+				 "service_request_id": 12345,
+		  }]
+
+	def test_search_filter_basic_account
+		api = Scf::Api.new
+		api.stubs(:services).returns(JSON.parse(JSON.generate(FILTER_TEST_DATA)))
+
+		result = Scf::Cli.queryAccount(api, "location4", Scf::Cli::DEFAULT_PARAMS, "New Haven")
+
+		expected_result = "description,service_name,service_request_id
+a test desc,,12345
+a test that should be included,,12345
+"
+
+		assert_equal expected_result, result.force_encoding('UTF-8')
+	end
+
+	def test_search_filter_no_results
+		api = Scf::Api.new
+		api.stubs(:services).returns(JSON.parse(JSON.generate(FILTER_TEST_DATA)))
+
+		result = Scf::Cli.queryAccount(api, "location4", ["zipcode", "service_name"], "Greece")
+
+		expected = "zipcode,service_name\n"
+
+		assert_equal expected, result
+	end
+
 
 end
