@@ -53,3 +53,12 @@ bundle exec bin/scf --geo 41.307153,-72.925791 --params zipcode+address --param_
 ```
 bundle exec rake
 ```
+
+## Locations
+
+```
+location1: 53
+location2: 548
+location3: 549
+location4: 29
+```
