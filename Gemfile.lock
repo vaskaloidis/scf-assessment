@@ -22,7 +22,7 @@ GEM
     multipart-post (2.1.1)
     power_assert (1.1.4)
     rake (10.5.0)
-    rdoc (6.1.1)
+    rdoc (6.3.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
